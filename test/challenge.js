@@ -1,8 +1,10 @@
 // In each of the following functions, you'll work with the `recipeLibrary` dataset from recipeLibrary.js.
 // Your job is to write functions that return the correct result.
 
+import { recipeLibrary } from "../recipeLibrary.js";
+
 // Import the recipeLibrary
-const recipeLibrary = require('./recipeLibrary');
+recipeLibrary
 
 //////////////////////////////
 // Required Challenges

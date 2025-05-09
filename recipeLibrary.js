@@ -1,6 +1,6 @@
 // recipeLibrary.js
 
-const recipeLibrary = [
+export const recipeLibrary = [
   {
     name: "Italian",
     recipes: [
@@ -205,5 +205,3 @@ const recipeLibrary = [
     ]
   }
 ];
-
-module.exports = recipeLibrary;

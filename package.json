@@ -1,0 +1,19 @@
+{
+  "name": "recipe_object_practice",
+  "version": "1.0.0",
+  "description": "This allows students to get more practice interacting with objects and arrays using recipes as the example",
+  "main": "challenge.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "author": "Mike",
+  "license": "ISC",
+  "devDependencies": {
+    "chai": "^5.2.0",
+    "mocha": "^11.2.2"
+  },
+  "type": "module"
+}

@@ -1,18 +1,18 @@
 // solutions.js
 
-const recipeLibrary = require('./recipeLibrary');
+import recipeLibrary from '../recipeLibrary';
 
-function getAllCuisineNames() {
+export function getAllCuisineNames() {
   return Object.keys(recipeLibrary);
 }
 
-function getRecipesByCuisine(cuisineName) {
+export function getRecipesByCuisine(cuisineName) {
   const cuisine = recipeLibrary[cuisineName];
   if (!cuisine) return [];
   return cuisine.recipes.map(recipe => recipe.title);
 }
 
-function getAllUniqueIngredients() {
+export function getAllUniqueIngredients() {
   const ingredients = new Set();
   Object.values(recipeLibrary).forEach(cuisine => {
     cuisine.recipes.forEach(recipe => {
@@ -22,7 +22,7 @@ function getAllUniqueIngredients() {
   return Array.from(ingredients);
 }
 
-function getHighestRatedRecipe() {
+export function getHighestRatedRecipe() {
   let highest = null;
   Object.values(recipeLibrary).forEach(cuisine => {
     cuisine.recipes.forEach(recipe => {
@@ -34,7 +34,7 @@ function getHighestRatedRecipe() {
   return highest;
 }
 
-function getRecipesWithIngredient(ingredient) {
+export function getRecipesWithIngredient(ingredient) {
   const result = [];
   const lowerIngredient = ingredient.toLowerCase();
   Object.values(recipeLibrary).forEach(cuisine => {
@@ -47,7 +47,7 @@ function getRecipesWithIngredient(ingredient) {
   return result;
 }
 
-function getCuisinesWithComplexRecipes() {
+export function getCuisinesWithComplexRecipes() {
   const result = [];
   Object.entries(recipeLibrary).forEach(([cuisineName, cuisine]) => {
     if (cuisine.recipes.some(recipe => recipe.ingredients.length > 5)) {
@@ -57,7 +57,7 @@ function getCuisinesWithComplexRecipes() {
   return result;
 }
 
-function getRecipeCountByCuisine() {
+export function getRecipeCountByCuisine() {
   const result = {};
   Object.entries(recipeLibrary).forEach(([cuisineName, cuisine]) => {
     result[cuisineName] = cuisine.recipes.length;
@@ -65,7 +65,7 @@ function getRecipeCountByCuisine() {
   return result;
 }
 
-function getAverageRatingByCuisine() {
+export function getAverageRatingByCuisine() {
   const result = {};
   Object.entries(recipeLibrary).forEach(([cuisineName, cuisine]) => {
     const total = cuisine.recipes.reduce((sum, recipe) => sum + recipe.rating, 0);
@@ -75,7 +75,7 @@ function getAverageRatingByCuisine() {
   return result;
 }
 
-function getRecipesThatIncludeBaking() {
+export function getRecipesThatIncludeBaking() {
   const result = [];
   Object.values(recipeLibrary).forEach(cuisine => {
     cuisine.recipes.forEach(recipe => {
@@ -87,7 +87,7 @@ function getRecipesThatIncludeBaking() {
   return result;
 }
 
-function getTotalRecipeCount() {
+export function getTotalRecipeCount() {
   let count = 0;
   Object.values(recipeLibrary).forEach(cuisine => {
     count += cuisine.recipes.length;
@@ -97,7 +97,7 @@ function getTotalRecipeCount() {
 
 // Bonus Solutions
 
-function getRecipesByIngredient() {
+export function getRecipesByIngredient() {
   const result = {};
   Object.values(recipeLibrary).forEach(cuisine => {
     cuisine.recipes.forEach(recipe => {
@@ -113,7 +113,7 @@ function getRecipesByIngredient() {
   return result;
 }
 
-function getVegetarianRecipes() {
+export function getVegetarianRecipes() {
   const nonVeg = ["chicken", "beef", "pork", "fish", "shrimp"];
   const result = [];
   Object.values(recipeLibrary).forEach(cuisine => {
@@ -129,7 +129,7 @@ function getVegetarianRecipes() {
   return result;
 }
 
-function getCuisineWithMostDetailedRecipe() {
+export function getCuisineWithMostDetailedRecipe() {
   let maxSteps = 0;
   let cuisineResult = null;
   Object.entries(recipeLibrary).forEach(([cuisineName, cuisine]) => {
@@ -142,19 +142,3 @@ function getCuisineWithMostDetailedRecipe() {
   });
   return cuisineResult;
 }
-
-module.exports = {
-  getAllCuisineNames,
-  getRecipesByCuisine,
-  getAllUniqueIngredients,
-  getHighestRatedRecipe,
-  getRecipesWithIngredient,
-  getCuisinesWithComplexRecipes,
-  getRecipeCountByCuisine,
-  getAverageRatingByCuisine,
-  getRecipesThatIncludeBaking,
-  getTotalRecipeCount,
-  getRecipesByIngredient,
-  getVegetarianRecipes,
-  getCuisineWithMostDetailedRecipe
-};
