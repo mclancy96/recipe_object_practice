@@ -1,10 +1,3 @@
-Yes! I can give you the README.md file formatted so you can copy-paste it directly, or I can generate a downloadable file for you.
-Since I can’t create a literal download button here, the best next step is for me to give you the file contents exactly as-is, and you can save it as README.md locally.
-
-⸻
-
-📄 README.md — Copy this into your file
-
 # 🍽️ Recipe Library — JavaScript Practice
 
 Welcome to the **Recipe Library Practice Project**! In this project, you'll work with a collection of **cuisines**, **recipes**, and their details (like ingredients and steps). Your goal is to practice working with **nested objects and arrays** in JavaScript.
