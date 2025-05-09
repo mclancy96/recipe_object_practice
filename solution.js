@@ -1,144 +1,110 @@
 // solutions.js
 
-import recipeLibrary from '../recipeLibrary';
+import { recipeLibrary } from './recipeLibrary.js';
 
-export function getAllCuisineNames() {
-  return Object.keys(recipeLibrary);
+// 1. Get all cuisine names
+export function getAllCuisineNames(library) {
+  return library.map(cuisine => cuisine.name);
 }
 
-export function getRecipesByCuisine(cuisineName) {
-  const cuisine = recipeLibrary[cuisineName];
-  if (!cuisine) return [];
-  return cuisine.recipes.map(recipe => recipe.title);
+// 2. Get recipes by cuisine name
+export function getRecipesByCuisine(library, cuisineName) {
+  const cuisine = library.find(cuisine => cuisine.name === cuisineName);
+  return cuisine ? cuisine.recipes : [];
 }
 
-export function getAllUniqueIngredients() {
-  const ingredients = new Set();
-  Object.values(recipeLibrary).forEach(cuisine => {
-    cuisine.recipes.forEach(recipe => {
-      recipe.ingredients.forEach(ingredient => ingredients.add(ingredient.toLowerCase()));
-    });
-  });
-  return Array.from(ingredients);
+// 3. Get all unique ingredients
+export function getAllUniqueIngredients(library) {
+  const ingredients = library.flatMap(cuisine => cuisine.recipes.flatMap(recipe => recipe.ingredients));
+  return [...new Set(ingredients)];
 }
 
-export function getHighestRatedRecipe() {
-  let highest = null;
-  Object.values(recipeLibrary).forEach(cuisine => {
-    cuisine.recipes.forEach(recipe => {
-      if (!highest || recipe.rating > highest.rating) {
-        highest = recipe;
-      }
-    });
-  });
-  return highest;
+// 4. Get the highest rated recipe
+export function getHighestRatedRecipe(library) {
+  const allRecipes = library.flatMap(cuisine => cuisine.recipes);
+  return allRecipes.reduce((best, recipe) => recipe.rating > best.rating ? recipe : best);
 }
 
-export function getRecipesWithIngredient(ingredient) {
-  const result = [];
-  const lowerIngredient = ingredient.toLowerCase();
-  Object.values(recipeLibrary).forEach(cuisine => {
-    cuisine.recipes.forEach(recipe => {
-      if (recipe.ingredients.some(i => i.toLowerCase() === lowerIngredient)) {
-        result.push(recipe.title);
-      }
-    });
-  });
-  return result;
+// 5. Get recipes with a specific ingredient
+export function getRecipesWithIngredient(library, ingredient) {
+  return library.flatMap(cuisine =>
+    cuisine.recipes.filter(recipe => recipe.ingredients.includes(ingredient))
+  );
 }
 
-export function getCuisinesWithComplexRecipes() {
-  const result = [];
-  Object.entries(recipeLibrary).forEach(([cuisineName, cuisine]) => {
-    if (cuisine.recipes.some(recipe => recipe.ingredients.length > 5)) {
-      result.push(cuisineName);
-    }
-  });
-  return result;
+// 6. Get cuisines with complex recipes (5+ steps)
+export function getCuisinesWithComplexRecipes(library) {
+  return library
+    .filter(cuisine => cuisine.recipes.some(recipe => recipe.steps.length >= 5))
+    .map(cuisine => cuisine.name);
 }
 
-export function getRecipeCountByCuisine() {
+// 7. Get recipe count by cuisine
+export function getRecipeCountByCuisine(library) {
   const result = {};
-  Object.entries(recipeLibrary).forEach(([cuisineName, cuisine]) => {
-    result[cuisineName] = cuisine.recipes.length;
+  library.forEach(cuisine => {
+    result[cuisine.name] = cuisine.recipes.length;
   });
   return result;
 }
 
-export function getAverageRatingByCuisine() {
+// 8. Get average rating by cuisine
+export function getAverageRatingByCuisine(library) {
   const result = {};
-  Object.entries(recipeLibrary).forEach(([cuisineName, cuisine]) => {
-    const total = cuisine.recipes.reduce((sum, recipe) => sum + recipe.rating, 0);
-    const avg = total / cuisine.recipes.length;
-    result[cuisineName] = Number(avg.toFixed(2));
+  library.forEach(cuisine => {
+    const ratings = cuisine.recipes.map(recipe => recipe.rating);
+    const avg = ratings.reduce((sum, r) => sum + r, 0) / ratings.length;
+    result[cuisine.name] = parseFloat(avg.toFixed(2)); // rounded to 2 decimals
   });
   return result;
 }
 
-export function getRecipesThatIncludeBaking() {
-  const result = [];
-  Object.values(recipeLibrary).forEach(cuisine => {
-    cuisine.recipes.forEach(recipe => {
-      if (recipe.steps.some(step => step.toLowerCase().includes('bake'))) {
-        result.push(recipe);
-      }
-    });
-  });
-  return result;
+// 9. Get recipes that include baking
+export function getRecipesThatIncludeBaking(library) {
+  return library.flatMap(cuisine =>
+    cuisine.recipes.filter(recipe =>
+      recipe.steps.some(step => step.toLowerCase().includes('bake'))
+    )
+  );
 }
 
-export function getTotalRecipeCount() {
-  let count = 0;
-  Object.values(recipeLibrary).forEach(cuisine => {
-    count += cuisine.recipes.length;
-  });
-  return count;
+// 10. Get total recipe count
+export function getTotalRecipeCount(library) {
+  return library.reduce((total, cuisine) => total + cuisine.recipes.length, 0);
 }
 
-// Bonus Solutions
-
-export function getRecipesByIngredient() {
-  const result = {};
-  Object.values(recipeLibrary).forEach(cuisine => {
-    cuisine.recipes.forEach(recipe => {
-      recipe.ingredients.forEach(ingredient => {
-        const key = ingredient.toLowerCase();
-        if (!result[key]) {
-          result[key] = [];
-        }
-        result[key].push(recipe.title);
-      });
-    });
-  });
-  return result;
+// 11. Get recipes by ingredient (BONUS)
+export function getRecipesByIngredient(library, ingredient) {
+  return getRecipesWithIngredient(library, ingredient); // Same logic as #5 — reuse it!
 }
 
-export function getVegetarianRecipes() {
-  const nonVeg = ["chicken", "beef", "pork", "fish", "shrimp"];
-  const result = [];
-  Object.values(recipeLibrary).forEach(cuisine => {
-    cuisine.recipes.forEach(recipe => {
-      const hasMeat = recipe.ingredients.some(ingredient =>
-        nonVeg.some(meat => ingredient.toLowerCase().includes(meat))
-      );
-      if (!hasMeat) {
-        result.push(recipe.title);
-      }
-    });
-  });
-  return result;
+// 12. Get vegetarian recipes (BONUS)
+// We'll define vegetarian recipes as those that do not contain meat (chicken, pork, beef, pancetta, fish)
+const MEAT_INGREDIENTS = ['chicken', 'beef', 'pork', 'pancetta', 'fish'];
+
+export function getVegetarianRecipes(library) {
+  return library.flatMap(cuisine =>
+    cuisine.recipes.filter(recipe =>
+      recipe.ingredients.every(ing =>
+        !MEAT_INGREDIENTS.some(meat => ing.toLowerCase().includes(meat))
+      )
+    )
+  );
 }
 
-export function getCuisineWithMostDetailedRecipe() {
-  let maxSteps = 0;
-  let cuisineResult = null;
-  Object.entries(recipeLibrary).forEach(([cuisineName, cuisine]) => {
+// 13. Get cuisine with most detailed recipe (most steps) (BONUS)
+export function getCuisineWithMostDetailedRecipe(library) {
+  let maxSteps = -1;
+  let cuisineName = '';
+
+  library.forEach(cuisine => {
     cuisine.recipes.forEach(recipe => {
       if (recipe.steps.length > maxSteps) {
         maxSteps = recipe.steps.length;
-        cuisineResult = cuisineName;
+        cuisineName = cuisine.name;
       }
     });
   });
-  return cuisineResult;
+
+  return cuisineName;
 }

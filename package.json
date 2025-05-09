@@ -7,7 +7,7 @@
     "test": "test"
   },
   "scripts": {
-    "test": "mocha"
+    "test": "mocha --bail"
   },
   "author": "Mike",
   "license": "ISC",

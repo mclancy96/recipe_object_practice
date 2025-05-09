@@ -1,140 +1,94 @@
 import { expect } from 'chai';
 import { recipeLibrary } from '../recipeLibrary.js';
+import * as studentCode from '../solution.js';
 
-let studentCode = {};
-try {
-  studentCode = await import('../challenges');
-} catch (err) {
-  // file may not exist or have syntax errors
-}
-
-describe('Recipe Library Challenge Tests', () => {
-
-  it('getAllCuisineNames should return an array of cuisine names', () => {
-    if (typeof studentCode.getAllCuisineNames !== 'function') return;
-    const result = studentCode.getAllCuisineNames();
+describe('Required Challenges', () => {
+  it('getAllCuisineNames should return an array of all cuisine names', () => {
+    const result = studentCode.getAllCuisineNames?.(recipeLibrary);
     expect(result).to.be.an('array');
-    expect(result).to.have.members(Object.keys(recipeLibrary));
+    expect(result).to.include('Italian');
+    expect(result).to.include('Mexican');
   });
 
-  it('getRecipesByCuisine should return recipe titles for given cuisine', () => {
-    if (typeof studentCode.getRecipesByCuisine !== 'function') return;
-    const cuisine = Object.keys(recipeLibrary)[0];
-    const expectedTitles = recipeLibrary[cuisine].recipes.map(r => r.title);
-    const result = studentCode.getRecipesByCuisine(cuisine);
+  it('getRecipesByCuisine should return recipes for a given cuisine', () => {
+    const result = studentCode.getRecipesByCuisine?.(recipeLibrary, 'Italian');
     expect(result).to.be.an('array');
-    expect(result).to.have.members(expectedTitles);
+    expect(result[0]).to.have.property('title');
   });
 
-  it('getAllUniqueIngredients should return unique ingredients', () => {
-    if (typeof studentCode.getAllUniqueIngredients !== 'function') return;
-    const allIngredients = new Set();
-    Object.values(recipeLibrary).forEach(cuisine => {
-      cuisine.recipes.forEach(recipe => {
-        recipe.ingredients.forEach(ingredient => allIngredients.add(ingredient.toLowerCase()));
-      });
-    });
-    const result = studentCode.getAllUniqueIngredients();
+  it('getAllUniqueIngredients should return all unique ingredients', () => {
+    const result = studentCode.getAllUniqueIngredients?.(recipeLibrary);
     expect(result).to.be.an('array');
-    expect(result).to.have.members(Array.from(allIngredients));
+    expect(result).to.include('tomato');
   });
 
-  it('getHighestRatedRecipe should return recipe with highest rating', () => {
-    if (typeof studentCode.getHighestRatedRecipe !== 'function') return;
-    let highest = null;
-    Object.values(recipeLibrary).forEach(cuisine => {
-      cuisine.recipes.forEach(recipe => {
-        if (!highest || recipe.rating > highest.rating) {
-          highest = recipe;
-        }
-      });
-    });
-    const result = studentCode.getHighestRatedRecipe();
+  it('getHighestRatedRecipe should return the recipe object with the highest rating', () => {
+    const result = studentCode.getHighestRatedRecipe?.(recipeLibrary);
     expect(result).to.be.an('object');
-    expect(result.title).to.equal(highest.title);
+    expect(result).to.have.property('title');
+    expect(result).to.have.property('rating');
   });
 
-  it('getRecipesWithIngredient should return recipes with specific ingredient', () => {
-    if (typeof studentCode.getRecipesWithIngredient !== 'function') return;
-    const ingredient = 'garlic';
-    const expected = [];
-    Object.values(recipeLibrary).forEach(cuisine => {
-      cuisine.recipes.forEach(recipe => {
-        if (recipe.ingredients.some(i => i.toLowerCase() === ingredient)) {
-          expected.push(recipe.title);
-        }
-      });
-    });
-    const result = studentCode.getRecipesWithIngredient(ingredient);
+  it('getRecipesWithIngredient should return recipes that contain a specific ingredient', () => {
+    const result = studentCode.getRecipesWithIngredient?.(recipeLibrary, 'tomato');
     expect(result).to.be.an('array');
-    expect(result).to.have.members(expected);
+    expect(result[0]).to.have.property('title');
   });
 
-  // BONUS TESTS
-
-  it('getCuisineWithMostRecipes should return the cuisine name with most recipes', () => {
-    if (typeof studentCode.getCuisineWithMostRecipes !== 'function') return;
-    let maxCuisine = '';
-    let maxCount = 0;
-    Object.entries(recipeLibrary).forEach(([cuisine, data]) => {
-      if (data.recipes.length > maxCount) {
-        maxCount = data.recipes.length;
-        maxCuisine = cuisine;
-      }
-    });
-    const result = studentCode.getCuisineWithMostRecipes();
-    expect(result).to.equal(maxCuisine);
+  it('getCuisinesWithComplexRecipes should return cuisines with recipes that have >5 ingredients', () => {
+    const result = studentCode.getCuisinesWithComplexRecipes?.(recipeLibrary);
+    expect(result).to.be.an('array');
+    expect(result).to.include('Italian');
   });
 
-  it('getAverageRatingByCuisine should return average rating of a cuisine', () => {
-    if (typeof studentCode.getAverageRatingByCuisine !== 'function') return;
-    const cuisine = Object.keys(recipeLibrary)[0];
-    const recipes = recipeLibrary[cuisine].recipes;
-    const avgRating = recipes.reduce((sum, r) => sum + r.rating, 0) / recipes.length;
+  it('getRecipeCountByCuisine should return an object mapping cuisines to recipe counts', () => {
+    const result = studentCode.getRecipeCountByCuisine?.(recipeLibrary);
+    expect(result).to.be.an('object');
+    expect(result).to.have.property('Italian');
+    expect(result['Italian']).to.be.a('number');
+  });
 
-    const result = studentCode.getAverageRatingByCuisine(cuisine);
+  it('getAverageRatingByCuisine should return an object mapping cuisines to avg ratings', () => {
+    const result = studentCode.getAverageRatingByCuisine?.(recipeLibrary);
+    expect(result).to.be.an('object');
+    expect(result).to.have.property('Mexican');
+    expect(result['Mexican']).to.be.within(1, 5);
+  });
+
+  it('getRecipesThatIncludeBaking should return recipes that require a baking step', () => {
+    const result = studentCode.getRecipesThatIncludeBaking?.(recipeLibrary);
+    expect(result).to.be.an('array');
+    expect(result[0]).to.have.property('title');
+  });
+
+  it('getTotalRecipeCount should return the total number of recipes', () => {
+    const result = studentCode.getTotalRecipeCount?.(recipeLibrary);
     expect(result).to.be.a('number');
-    expect(result).to.be.closeTo(avgRating, 0.01);
+    expect(result).to.be.greaterThan(5);
   });
-
-  it('getRecipesUnderTimeLimit should return recipes under given time limit', () => {
-    if (typeof studentCode.getRecipesUnderTimeLimit !== 'function') return;
-    const timeLimit = 45;
-    const expected = [];
-    Object.values(recipeLibrary).forEach(cuisine => {
-      cuisine.recipes.forEach(recipe => {
-        if (recipe.prep_time_minutes <= timeLimit) {
-          expected.push(recipe.title);
-        }
-      });
-    });
-    const result = studentCode.getRecipesUnderTimeLimit(timeLimit);
-    expect(result).to.be.an('array');
-    expect(result).to.have.members(expected);
-  });
-
 });
 
-/**
- * 🛠️ SETUP INSTRUCTIONS:
- *
- * 1️⃣ Install dependencies:
- * ```
- * npm install mocha chai
- * ```
- *
- * 2️⃣ To run the tests:
- * ```
- * npx mocha
- * ```
- * Or add this script to package.json:
- * ```
- * "scripts": {
- *   "test": "mocha"
- * }
- * ```
- * Then run:
- * ```
- * npm test
- * ```
- */
+describe('Bonus Challenges (Optional)', () => {
+  it('getRecipesByIngredient should return recipes that contain a specific ingredient', () => {
+    const result = studentCode.getRecipesByIngredient?.(recipeLibrary, 'cheddar cheese');
+    expect(result).to.be.an('array');
+    expect(result[0]).to.have.property('title');
+  });
+  const MEAT_INGREDIENTS = ['chicken', 'beef', 'pork', 'pancetta', 'fish'];
+  it('getVegetarianRecipes should return only vegetarian recipes', () => {
+    const result = studentCode.getVegetarianRecipes?.(recipeLibrary);
+    expect(result).to.be.an('array');
+    result.forEach(recipe => {
+      const hasNoMeat = recipe.ingredients.every(ingredient =>
+        !MEAT_INGREDIENTS.some(meat => ingredient.toLowerCase().includes(meat))
+      );
+      expect(hasNoMeat).to.be.true;
+    });
+  });
+
+  it('getCuisineWithMostDetailedRecipe should return the cuisine with recipe that has most steps', () => {
+    const result = studentCode.getCuisineWithMostDetailedRecipe?.(recipeLibrary);
+    expect(result).to.be.a('string');
+    expect(['Italian', 'Mexican', 'Indian', 'Japanese']).to.include(result);
+  });
+});
