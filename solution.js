@@ -1,7 +1,4 @@
 // solutions.js
-
-import { recipeLibrary } from './recipeLibrary.js';
-
 // 1. Get all cuisine names
 export function getAllCuisineNames(library) {
   return library.map(cuisine => cuisine.name);

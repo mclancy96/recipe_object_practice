@@ -1,8 +1,6 @@
 // In each of the following functions, you'll work with the `recipeLibrary` dataset from recipeLibrary.js.
 // Your job is to write functions that return the correct result.
 
-import { recipeLibrary } from "../recipeLibrary.js";
-
 //////////////////////////////
 // Required Challenges
 //////////////////////////////
@@ -52,7 +50,7 @@ export function getRecipesThatIncludeBaking() {
   // Your code here
 }
 
-// 10️⃣ Return the total number of distinct recipes in the entire library
+// 1️⃣0️⃣ Return the total number of distinct recipes in the entire library
 export function getTotalRecipeCount() {
   // Your code here
 }

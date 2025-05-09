@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { recipeLibrary } from '../recipeLibrary.js';
-import * as studentCode from '../solution.js';
+import * as studentCode from './challenge.js';
 
 describe('Required Challenges', () => {
   it('getAllCuisineNames should return an array of all cuisine names', () => {
