@@ -16,7 +16,7 @@ The recipe library is stored in a file called `recipeLibrary.js`. It contains an
   - `title`
   - `ingredients` (array of strings)
   - `steps` (array of strings)
-  - `rating` (number from 1 to 5)
+  - `rating` (number from 1 to 5 in the form of a float (e.g. 1.4))
 
 Example (simplified):
 
@@ -40,68 +40,28 @@ const recipeLibrary = [
 
 ⸻
 
-🚀 Your Task
+## 📋 Required Challenges
 
-Open the file challenges.js.
-For each challenge below, write a function that solves the problem.
+Write the following functions in `challenges.js`:
 
-Challenge 1️⃣
+1. **getAllCuisineNames** — Return an array of all cuisine names (e.g., `["Italian", "Mexican", ...]`).
+2. **getRecipesByCuisine(cuisineName)** — Return all recipe titles for a given cuisine name (string).
+3. **getAllUniqueIngredients** — Return all unique ingredients used across all recipes (no duplicates).
+4. **getHighestRatedRecipe** — Return the highest-rated recipe across all cuisines (return the recipe object).
+5. **getRecipesWithIngredient(ingredient)** — Return an array of all recipe titles that use a specific ingredient (case-insensitive).
+6. **getCuisinesWithComplexRecipes** — Return an array of cuisines that have at least one recipe with more than 5 ingredients.
+7. **getRecipeCountByCuisine** — Return an object where keys are cuisine names and values are the number of recipes in each cuisine.
+8. **getAverageRatingByCuisine** — Return an object where keys are cuisine names and values are the average recipe rating (rounded to 2 decimals).
+9. **getRecipesThatIncludeBaking** — Return an array of recipes (objects) that include a step mentioning "bake" (case-insensitive).
+10. **getTotalRecipeCount** — Return the total number of distinct recipes in the entire library.
 
-getRecipeTitlesByCuisine(cuisineName)
-Return an array of all recipe titles in the given cuisine.
+## 🌟 Bonus Challenges (Optional)
 
-⸻
+If you want an extra challenge, try these!
 
-Challenge 2️⃣
-
-findRecipesWithIngredient(ingredient)
-Return an array of recipe titles that include the given ingredient.
-
-⸻
-
-Challenge 3️⃣
-
-getAllIngredients()
-Return a deduplicated array of all ingredients used in all recipes (across all cuisines).
-
-⸻
-
-Challenge 4️⃣
-
-findHighRatedRecipes(minRating)
-Return an array of recipe titles with a rating greater than or equal to minRating.
-
-⸻
-
-Challenge 5️⃣
-
-countTotalRecipes()
-Return the total number of recipes in the entire library.
-
-⸻
-
-🌟 Bonus Challenges (optional but fun!)
-
-These are more advanced and will really stretch your skills!
-
-Bonus 1️⃣
-
-getRecipesByStepCount(stepCount)
-Return an array of recipe titles that have exactly stepCount steps.
-
-⸻
-
-Bonus 2️⃣
-
-addRecipe(cuisineName, newRecipe)
-Add a new recipe to a given cuisine. If the cuisine does not exist, create it and add the recipe.
-
-⸻
-
-Bonus 3️⃣
-
-getTopRatedRecipe()
-Return the title of the recipe with the highest rating across all cuisines.
+1. **getRecipesByIngredient** — Return an object where keys are ingredients and values are arrays of recipe titles that use that ingredient.
+2. **getVegetarianRecipes** — Return an array of recipe titles where all ingredients are vegetarian (assume: no "chicken", "beef", "pork", "fish", "shrimp").
+3. **getCuisineWithMostDetailedRecipe** — Return the cuisine that has the recipe with the longest list of steps.
 
 ⸻
 
